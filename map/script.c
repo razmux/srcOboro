@@ -24680,6 +24680,25 @@ BUILDIN_FUNC(bg_item)
 // '?' - one optional parameter
 // '*' - unknown number of optional parameters
 
+// (^~_~^) Gepard Shield Start
+
+BUILDIN_FUNC(get_unique_id)
+{
+	struct map_session_data* sd = script_rid2sd(st);
+
+	if (sd == NULL)
+	{
+		script_pushint(st, 0);
+		return SCRIPT_CMD_FAILURE;
+	}
+
+	script_pushint(st, session[sd->fd]->gepard_info.unique_id);
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
+// (^~_~^) Gepard Shield End
+
 /// script command definitions
 /// for an explanation on args, see add_buildin_func
 struct script_function buildin_func[] = {
@@ -24697,6 +24716,12 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(mapeventwarp, "ssiisiii"),
 	BUILDIN_DEF(ChangeBG,""),
 	BUILDIN_DEF(bg_item,"ii"),
+
+// (^~_~^) Gepard Shield Start
+
+	BUILDIN_DEF(get_unique_id,""),
+
+// (^~_~^) Gepard Shield End
 
 	// NPC interaction
 	BUILDIN_DEF(mes,"s*"),

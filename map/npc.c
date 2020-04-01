@@ -1315,8 +1315,53 @@ int npc_scriptcont(struct map_session_data* sd, int id, bool closing)
 	if (!sd->st)
 		return 1;
 
+// (^~_~^) Gepard Shield Start
+/*
+// (^~_~^) Gepard Shield End
 	if( closing && sd->st && sd->st->state == CLOSE )
 		sd->st->state = END;
+// (^~_~^) Gepard Shield Start
+*/
+// (^~_~^) Gepard Shield End
+
+// (^~_~^) Gepard Shield Start
+
+	if( closing ){
+		switch( sd->st->state ){
+			// close
+			case CLOSE:
+				sd->st->state = END;
+				break;
+			// close2
+			case STOP:
+				sd->st->state = RUN;
+				break;
+			default:
+				sd->st->state = END;
+				ShowError( "npc_scriptcont: unexpected state '%d' for closing call. (AID: %u CID: %u)\n", sd->st->state, sd->status.account_id, sd->status.char_id );
+				break;
+		}
+	}else{
+		switch( sd->st->state ){
+			// next
+			// progressbar
+			case STOP:
+				sd->st->state = RUN;
+				break;
+			// input
+			// menu
+			// select
+			case RERUNLINE:
+				// keep state as it is
+				break;
+			default:
+				sd->st->state = END;
+				ShowError( "npc_scriptcont: unexpected state '%d' for continue call. (AID: %u CID: %u)\n", sd->st->state, sd->status.account_id, sd->status.char_id );
+				break;
+		}
+	}
+
+// (^~_~^) Gepard Shield End
 
 	run_script_main(sd->st);
 
